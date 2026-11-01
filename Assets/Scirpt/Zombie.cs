@@ -37,7 +37,7 @@ public class Zombie : LivingEntity
 
     public float sinkSpeed = 0.5f;
     public float sinkDistance = 2f;
-
+    public bool IsSinkComplete { get; private set; } = false;
     private bool isSinking = false;
 
     public State CurrentState
@@ -257,34 +257,34 @@ public class Zombie : LivingEntity
     private IEnumerator CoSink()
     {
 
-    agent.enabled = false;
+        agent.enabled = false;
 
-    Rigidbody rb = GetComponent<Rigidbody>();
+        Rigidbody rb = GetComponent<Rigidbody>();
 
-    if (rb != null)
-    {
-        rb.linearVelocity = Vector3.zero;
-        rb.isKinematic = true;
-    }
+        if (rb != null)
+        {
+            rb.linearVelocity = Vector3.zero;
+            rb.isKinematic = true;
+        }
 
-    zombieAnimator.applyRootMotion = false;
+        zombieAnimator.applyRootMotion = false;
 
-    Vector3 targetPosition =
-        transform.position + Vector3.down * sinkDistance;
+        Vector3 targetPosition =
+            transform.position + Vector3.down * sinkDistance;
 
-    while (Vector3.Distance(transform.position, targetPosition) > 0.001f)
-    {
-        transform.position = Vector3.MoveTowards(
-            transform.position,
-            targetPosition,
-            sinkSpeed * Time.deltaTime
-        );
+        while (Vector3.Distance(transform.position, targetPosition) > 0.001f)
+        {
+            transform.position = Vector3.MoveTowards(
+                transform.position,
+                targetPosition,
+                sinkSpeed * Time.deltaTime
+            );
 
-        yield return null;
-    }
+            yield return null;
+        }
 
 
-    Destroy(gameObject);
+        IsSinkComplete = true;
     }
 
     public override void Die()

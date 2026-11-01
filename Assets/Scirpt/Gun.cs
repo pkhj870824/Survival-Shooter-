@@ -8,7 +8,11 @@ public class Gun : MonoBehaviour
     public GunData gunData;
     public LayerMask targetLayer;
 
+    // 총 발사 사운드
+    public AudioClip shotClip;
+
     private LineRenderer bulletLineRenderer;
+    private AudioSource gunAudioSource;
 
     private float fireDistance = 50f;
     private float lastFireTime;
@@ -16,6 +20,7 @@ public class Gun : MonoBehaviour
     private void Awake()
     {
         bulletLineRenderer = GetComponent<LineRenderer>();
+        gunAudioSource = GetComponent<AudioSource>();
 
         bulletLineRenderer.positionCount = 2;
         bulletLineRenderer.enabled = false;
@@ -43,7 +48,6 @@ public class Gun : MonoBehaviour
 
         if (Physics.Raycast(ray, out RaycastHit hit, fireDistance, targetLayer))
         {
-
             hitPosition = hit.point;
 
             IDamageable target = hit.collider.GetComponentInParent<IDamageable>();
@@ -55,7 +59,6 @@ public class Gun : MonoBehaviour
         }
         else
         {
-
             hitPosition = fireTransform.position + fireTransform.forward * fireDistance;
         }
 
@@ -65,6 +68,12 @@ public class Gun : MonoBehaviour
     private IEnumerator CoShotEffect(Vector3 hitPosition)
     {
         muzzleFlashEffect.Play();
+
+        // 총 발사 사운드
+        if (gunAudioSource != null && shotClip != null)
+        {
+            gunAudioSource.PlayOneShot(shotClip);
+        }
 
         bulletLineRenderer.SetPosition(0, fireTransform.position);
         bulletLineRenderer.SetPosition(1, hitPosition);
