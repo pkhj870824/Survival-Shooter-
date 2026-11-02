@@ -63,7 +63,6 @@ public class PlayerHealth : LivingEntity
 
         base.Die();
 
-        // 사망 사운드
         if (playerAudioSource != null && deathClip != null)
         {
             playerAudioSource.PlayOneShot(deathClip);
