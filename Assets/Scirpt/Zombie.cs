@@ -259,14 +259,6 @@ public class Zombie : LivingEntity
 
         agent.enabled = false;
 
-        Rigidbody rb = GetComponent<Rigidbody>();
-
-        if (rb != null)
-        {
-            rb.linearVelocity = Vector3.zero;
-            rb.isKinematic = true;
-        }
-
         zombieAnimator.applyRootMotion = false;
 
         Vector3 targetPosition =
