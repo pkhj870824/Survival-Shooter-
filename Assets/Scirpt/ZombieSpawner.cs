@@ -33,7 +33,6 @@ public class ZombieSpawner : MonoBehaviour
             zombieDatas.Length != zombiePrefabs.Length ||
             spawnPoints.Length == 0)
         {
-            Debug.LogError("ZombieSpawner 설정을 확인하세요.");
             enabled = false;
             return;
         }
